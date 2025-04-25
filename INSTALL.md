@@ -17,7 +17,7 @@
             </li>
             <li>Through the "Navigation" menu, go to the System -> Users -> User groups -> Administrator section.
                 <ul>
-                  <li>In all blocks, check all matches starting from "extension/module/daccount_extended ...", if exist.</li>
+                  <li>In all blocks, check all matches starting from "extension/module/d_account_extended ...", if exist.</li>
                   <li>Click the "Save" button.</li>
                 </ul>
             </li>
