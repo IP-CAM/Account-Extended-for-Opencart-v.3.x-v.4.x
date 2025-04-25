@@ -3,7 +3,13 @@
 <head></head>
 <body>
     <h1>Account Extended change log</h1>
-    <h2>[v1.0.0] (Release date: 10.08.2024)</h2>
+    <h2>[v1.0.1] (Release date: 10.08.2024)</h2>
+    <p>
+        <ul>
+            <li>Bugs fixed.</li>
+        </ul>
+    </p>
+    <h2>[v1.0.0] (Release date: 20.06.2024)</h2>
     <p>
         <ul>
             <li>Version 1.0.0</li>
