@@ -1,0 +1,19 @@
+<div class="module-account_extended module-account_extended-{{ module }}"{% if attr_ID %} id="{{ attr_ID }}"{% endif %}>
+    <div class="module-account_extended-wrap">
+        <h2>{{ heading_title }}</h2>
+
+        <div class="list-group mb-3">
+            {% for link in account_links %}
+                {% if logged %}
+                    {% if link.logged and link.route in links %}
+                        <a href="{{ link.link }}" class="list-group-item logged {{ link.class }} {% if link.route == route_current %}current{% endif %}">{{ link.name }}</a>
+                    {% endif %}
+                {% else %}
+                    {% if not link.logged and link.route in links %}
+                        <a href="{{ link.link }}" class="list-group-item not_logged {{ link.class }} {% if link.route == route_current %}current{% endif %}">{{ link.name }}</a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
