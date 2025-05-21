@@ -12,14 +12,13 @@ class DAccountExtended extends \Opencart\System\Engine\Controller {
     private $error = array();
 
     public function index(): void {
+        $x = version_compare(VERSION, '4.0.2.0', '>=') ? '.' : '|';
+
         $this->load->language('extension/daccount_extended/module/daccount_extended');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('setting/module');
-        $this->load->model('extension/daccount_extended/module/daccount_extended');
-
-        $x = (version_compare(VERSION, '4.0.2.0', '>=')) ? '.' : '|';
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
             if (!isset($this->request->get['module_id'])) {
@@ -45,6 +44,12 @@ class DAccountExtended extends \Opencart\System\Engine\Controller {
             $data['error_name'] = '';
         }
 
+        $url = '';
+
+        if (isset($this->request->get['module_id'])) {
+            $url .= '&module_id=' . $this->request->get['module_id'];
+        }
+
         $data['breadcrumbs'] = array();
 
         $data['breadcrumbs'][] = array(
@@ -59,18 +64,13 @@ class DAccountExtended extends \Opencart\System\Engine\Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('extension/daccount_extended/module/daccount_extended', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('extension/daccount_extended/module/daccount_extended', 'user_token=' . $this->session->data['user_token'] . $url)
         );
 
-        if (!isset($this->request->get['module_id'])) {
-            $data['action'] = $this->url->link('extension/daccount_extended/module/daccount_extended' . $x . 'save', 'user_token=' . $this->session->data['user_token'], true);
-        } else {
-            $data['action'] = $this->url->link('extension/daccount_extended/module/daccount_extended' . $x . 'save', 'user_token=' . $this->session->data['user_token'] . '&module_id=' . $this->request->get['module_id'], true);
-        }
-
+        $data['action'] = $this->url->link('extension/daccount_extended/module/daccount_extended' . $x . 'save', 'user_token=' . $this->session->data['user_token'] . $url);
         $data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
 
-        if (isset($this->request->get['module_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+        if (isset($this->request->get['module_id'])) {
             $module_info = $this->model_setting_module->getModule($this->request->get['module_id']);
         }
 
@@ -130,7 +130,29 @@ class DAccountExtended extends \Opencart\System\Engine\Controller {
             $data['status'] = 0;
         }
 
+        $blog_exist = version_compare(VERSION, '4.1.0.0', '>=') ? true : false;
+
+        $blog_pages = array();
+
+        if ($blog_exist) {
+            $blog_pages = array(
+                'label' => $this->language->get('text_opt_blog'),
+                'pages' => array(
+                    array(
+                        'name'  => $this->language->get('text_opt_blog_a'),
+                        'route' => 'cms/blog' . $x . 'info'
+                    ),
+                    array(
+                        'name'  => $this->language->get('text_opt_blog_c'),
+                        'route' => 'cms/blog'
+                    )
+                )
+            );
+        }
+
         $data['excluded_list'] = array(
+            $blog_pages,
+
             array(
                 'label' => $this->language->get('text_opt_general'),
                 'pages' => array(
@@ -425,6 +447,12 @@ class DAccountExtended extends \Opencart\System\Engine\Controller {
                 $json['error']['warning'] = $this->language->get('error_warning');
             }
         }
+
+        /* if (isset($this->request->get['module_id'])) {
+            $json['redirect'] = $this->url->link('extension/daccount_extended/module/daccount_extended', 'user_token=' . $this->session->data['user_token'] . '&module_id=' . $this->request->get['module_id']);
+        } else {
+            $json['redirect'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
+        } */
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));

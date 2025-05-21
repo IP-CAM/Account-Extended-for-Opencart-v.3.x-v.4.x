@@ -11,16 +11,16 @@ class ControllerExtensionModuleDAccountExtended extends Controller {
     private $error = array();
 
     public function index() {
-        $this->load->language('extension/module/d_account_extended');
+        $this->load->language('extension/module/daccount_extended');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('setting/module');
-        $this->load->model('extension/module/d_account_extended');
+        $this->load->model('extension/module/daccount_extended');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
             if (!isset($this->request->get['module_id'])) {
-                $this->model_setting_module->addModule('d_account_extended', $this->request->post);
+                $this->model_setting_module->addModule('daccount_extended', $this->request->post);
             } else {
                 $this->model_setting_module->editModule($this->request->get['module_id'], $this->request->post);
             }
@@ -42,6 +42,12 @@ class ControllerExtensionModuleDAccountExtended extends Controller {
             $data['error_name'] = '';
         }
 
+        $url = '';
+
+        if (isset($this->request->get['module_id'])) {
+            $url .= '&module_id=' . $this->request->get['module_id'];
+        }
+
         $data['breadcrumbs'] = array();
 
         $data['breadcrumbs'][] = array(
@@ -56,18 +62,13 @@ class ControllerExtensionModuleDAccountExtended extends Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('extension/module/d_account_extended', 'user_token=' . $this->session->data['user_token'], true)
+            'href' => $this->url->link('extension/module/daccount_extended', 'user_token=' . $this->session->data['user_token'] . $url, true)
         );
 
-        if (!isset($this->request->get['module_id'])) {
-            $data['action'] = $this->url->link('extension/module/d_account_extended', 'user_token=' . $this->session->data['user_token'], true);
-        } else {
-            $data['action'] = $this->url->link('extension/module/d_account_extended', 'user_token=' . $this->session->data['user_token'] . '&module_id=' . $this->request->get['module_id'], true);
-        }
-
+        $data['action'] = $this->url->link('extension/module/daccount_extended', 'user_token=' . $this->session->data['user_token'] . $url, true);
         $data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', true);
 
-		if (isset($this->request->get['module_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+		if (isset($this->request->get['module_id'])) {
 			$module_info = $this->model_setting_module->getModule($this->request->get['module_id']);
 		}
 
@@ -127,7 +128,7 @@ class ControllerExtensionModuleDAccountExtended extends Controller {
             $data['status'] = 0;
         }
 
-        $blog_exist = $this->model_extension_module_d_account_extended->tableExists('blog_category');
+        $blog_exist = $this->model_extension_module_daccount_extended->tableExists('blog_category');
 
         $blog_pages = array();
 
@@ -416,7 +417,7 @@ class ControllerExtensionModuleDAccountExtended extends Controller {
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('extension/module/d_account_extended', $data));
+        $this->response->setOutput($this->load->view('extension/module/daccount_extended', $data));
     }
 
     /**
@@ -425,7 +426,7 @@ class ControllerExtensionModuleDAccountExtended extends Controller {
      * @return bool $this->error
      */
     protected function validate() {
-        if (!$this->user->hasPermission('modify', 'extension/module/d_account_extended')) {
+        if (!$this->user->hasPermission('modify', 'extension/module/daccount_extended')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 

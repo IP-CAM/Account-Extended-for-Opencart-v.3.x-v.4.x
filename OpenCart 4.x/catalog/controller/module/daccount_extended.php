@@ -9,7 +9,8 @@
 
 namespace Opencart\Catalog\Controller\Extension\DAccountExtended\Module;
 class DAccountExtended extends \Opencart\System\Engine\Controller {
-    public function index($setting) {
+    public function index(array $setting): string {
+        $view = '';
         $display = $setting['invert'] ? false : true;
 
         if (isset($this->request->get['route'])) {
@@ -199,15 +200,11 @@ class DAccountExtended extends \Opencart\System\Engine\Controller {
 
                 if ($display) {
                     $data['module'] = $module++;
-                    return $this->load->view('extension/daccount_extended/module/daccount_extended', $data);
-                } else {
-                    return '';
+                    $view = $this->load->view('extension/daccount_extended/module/daccount_extended', $data);
                 }
-            } else {
-                return '';
             }
-        } else {
-            return '';
         }
+
+        return $view;
     }
 }

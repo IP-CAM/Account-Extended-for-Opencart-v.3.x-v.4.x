@@ -14,7 +14,7 @@ class ModelExtensionModuleDAccountExtended extends Model {
      * 
      * @param string $table_name
      * 
-     * @return bool $exists
+     * @return bool
      */
     public function tableExists($table_name) {
         return $this->db->query("SHOW TABLES LIKE '" . DB_PREFIX . $table_name . "'")->num_rows > 0;

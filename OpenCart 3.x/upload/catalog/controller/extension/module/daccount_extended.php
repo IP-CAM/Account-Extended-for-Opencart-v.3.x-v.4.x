@@ -9,6 +9,7 @@
 
 class ControllerExtensionModuleDAccountExtended extends Controller {
     public function index($setting) {
+        $view = '';
         $display = $setting['invert'] ? false : true;
 
         if (isset($this->request->get['route'])) {
@@ -44,7 +45,7 @@ class ControllerExtensionModuleDAccountExtended extends Controller {
             $data['customer_type'] = $setting['customer_type'];
 
             if (($data['customer_type'] == 0) || ($data['logged'] && $data['customer_type'] == 1) || (!$data['logged'] && $data['customer_type'] == 2)) {
-                $this->load->language('extension/module/d_account_extended');
+                $this->load->language('extension/module/daccount_extended');
 
                 static $module = 0;
 
@@ -205,15 +206,11 @@ class ControllerExtensionModuleDAccountExtended extends Controller {
 
                 if ($display) {
                     $data['module'] = $module++;
-                    return $this->load->view('extension/module/d_account_extended', $data);
-                } else {
-                    return '';
+                    $view = $this->load->view('extension/module/daccount_extended', $data);
                 }
-            } else {
-                return '';
             }
-        } else {
-            return '';
         }
+
+        return $view;
     }
 }
