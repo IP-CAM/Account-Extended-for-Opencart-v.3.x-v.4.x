@@ -437,8 +437,12 @@ class DAccountExtended extends \Opencart\System\Engine\Controller {
 
             if (!isset($this->request->get['module_id'])) {
                 $this->model_setting_module->addModule('daccount_extended.daccount_extended', $this->request->post);
+
+                //$json['redirect'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
             } else {
                 $this->model_setting_module->editModule($this->request->get['module_id'], $this->request->post);
+
+                //$json['redirect'] = $this->url->link('extension/daccount_extended/module/daccount_extended', 'user_token=' . $this->session->data['user_token'] . '&module_id=' . $this->request->get['module_id']);
             }
 
             $json['success'] = $this->language->get('text_success');
@@ -447,12 +451,6 @@ class DAccountExtended extends \Opencart\System\Engine\Controller {
                 $json['error']['warning'] = $this->language->get('error_warning');
             }
         }
-
-        /* if (isset($this->request->get['module_id'])) {
-            $json['redirect'] = $this->url->link('extension/daccount_extended/module/daccount_extended', 'user_token=' . $this->session->data['user_token'] . '&module_id=' . $this->request->get['module_id']);
-        } else {
-            $json['redirect'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module');
-        } */
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
