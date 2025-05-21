@@ -2,6 +2,7 @@
 <modification>
     <name>Account Extended</name>
     <code>DAccountExtended</code>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <author>D.art</author>
+    <link>https://github.com/dart-maker/daccount_extended-opencart</link>
 </modification>
